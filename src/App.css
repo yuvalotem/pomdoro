@@ -118,3 +118,8 @@ body{
 .nav-button:focus {
   background-color: #FFFFFF80;
 }
+
+.videos{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}

@@ -3,6 +3,7 @@ import NavBar from './components/NavBar';
 import Clock from './components/Clock';
 import ActionRow from './components/ActionRow';
 import './App.css';
+import MusicRow from './components/MusicRow';
 
 class App extends Component {
   constructor() {
@@ -12,7 +13,9 @@ class App extends Component {
       seconds: '00',
       timer: null,
       isWorkMode: true,
-      isActive: false
+      isActive: false,
+      shouldPlayMusic: false,
+      videoChosen: -1
     }
   }
 
@@ -65,16 +68,25 @@ class App extends Component {
 
   reset = () => {
     let newMinutes
+    let playMusic = false
     const newSeconds = '00'
+    let newvideo = this.state.videoChosen 
     if (this.state.isWorkMode) {
       newMinutes = '25'
     } else {
       newMinutes = '05'
+      playMusic = true
+      newvideo = this.state.videoChosen + 1
+    }
+    if(newvideo > 3){
+      newvideo = 0
     }
     this.setState({
       minutes: newMinutes,
       seconds: newSeconds,
-      isActive: false
+      isActive: false,
+      shouldPlayMusic: playMusic,
+      videoChosen: newvideo
     }, function () {
       clearInterval(this.state.timer)
     })
@@ -86,7 +98,6 @@ class App extends Component {
       isActive: false
     }, function () {
       this.reset()
-      clearInterval(this.state.timer)
     })
   }
 
@@ -96,6 +107,7 @@ class App extends Component {
         <NavBar changeMode={this.changeMode} isWorkMode={this.state.isWorkMode}/>
         <Clock minutes={this.state.minutes} seconds={this.state.seconds} />
         <ActionRow start={this.start} pause={this.pause} reset={this.reset} isActive={this.state.isActive} />
+        <MusicRow shouldPlayMusic={this.state.shouldPlayMusic} videoChosen={this.state.videoChosen}/>
       </div>
     );
   }
